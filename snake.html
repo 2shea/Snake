@@ -10,7 +10,11 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="title">Snake</h1>
+      <div class="row">
+        <div class="span12 text-center">
+          <h1 class="title">Snake</h1>
+        </div>
+      </div>
       
       <div class="snake-board"></div>
       <script>
@@ -18,9 +22,14 @@
           var board = new window.SG.Board(24, 24);
           var mainContainer = $('snake-board');
           var UI = new window.SG.UI(board, mainContainer);
-          // UI.play();
         });
       </script>
+    </div>
+    
+    <div class="instructions text-center">
+      <p>
+        Use the arrow keys to control the snake, and eat the apples to grow!
+      </p>
     </div>
   </body>
 </html>

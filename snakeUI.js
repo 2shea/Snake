@@ -1,4 +1,5 @@
 /*global window*/
+/*global $*/
 
 (function(root) {
   "use strict";
@@ -15,10 +16,6 @@
     39: "E",
     40: "S",
     37: "W"
-  }
-      
-  UI.prototype.play = function () {
-    
   };
   
   UI.prototype.handleKeyEvent = function (event) {
