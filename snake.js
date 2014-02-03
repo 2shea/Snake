@@ -1,5 +1,6 @@
 /*global console*/
 /*global $*/
+/*global Board*/
 
 (function (root) {
   "use strict";
@@ -53,12 +54,16 @@
           
       this.appleCoords.push(appleCoord);
     }
-  },
+  };
       
   Coord.prototype.plus = function (coord1, coord2) {
     var newX = coord1.X + coord2.X,
         newY = coord1.Y + coord2.Y;
     return new Coord(newX, newY);
+  };
+  
+  Coord.prototype.equal = function (otherCoord) {
+    return (this.X === otherCoord.X) && (this.Y === otherCoord.Y);
   };
   
   Snake.prototype.create = function (dimX, dimY) {
@@ -74,21 +79,33 @@
         
     if (this.board.validMove(newHead)) {
       this.segments.splice(0, 0, newHead);
-      this.tailCoord = this.segments.pop();
+      if (this.eatsApple(newHead)) {
+        // this.grow();
+        console.log("snake eats apples")
+      } else {
+        this.tailCoord = this.segments.pop();
+      }
     } else {
       this.board.gameOver = true;
       console.log("gameover");
     }
   };
   
-  Snake.prototype.turn = function (newDir) {
-    this.currentDir = newDir;
-    console.log("this is the new direction")
-    console.log(this.currentDir)
+  Snake.prototype.eatsApple = function (newHead) {
+    var index = 0, appleCoords = this.board.apples.appleCoords;
+    
+    console.log(appleCoords);
+    for (index =0; index < appleCoords.length; index+=1) {
+      if (appleCoords[index].equal(newHead)) {
+        appleCoords.splice(index, 1);
+        return true;
+      }
+    }
+    return false;
   };
   
-  Snake.prototype.grow = function () {
-    this.tailCoord = null;
+  Snake.prototype.turn = function (newDir) {
+    this.currentDir = newDir;
   };
   
   Board.prototype.create = function(dimX, dimY) {
@@ -113,7 +130,6 @@
   Board.prototype.validMove = function (newHead) {
     var inside = (newHead.X >= 0) && (newHead.X < this.dimX) && (newHead.Y >= 0)
     && (newHead.Y < this.dimY);
-    // console.log(inside);
     return inside;
   };
   
@@ -136,13 +152,10 @@
     
     for(index = 0; index < this.apples.appleCoords.length; index+=1) {
       apple = this.apples.appleCoords[index];
-      console.log(apple)
-      console.log(apple.X)
-      console.log(apple.Y)
       this.grid[apple.X][apple.Y] = "apple";
     }
     return this.grid;
-  },
+  };
   
   Board.prototype.render = function () {
     var row = 0, col = 0, $el = $('.snake-board');
@@ -157,7 +170,7 @@
         $el.append($('<div>').addClass(this.grid[row][col]));
       }
     }
-    console.log(this.grid)
+    // console.log(this.grid);
   }; 
       
 }(this));
