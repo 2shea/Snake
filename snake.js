@@ -1,6 +1,5 @@
 /*global console*/
 /*global $*/
-/*global Board*/
 
 (function (root) {
   "use strict";
@@ -43,17 +42,32 @@
   };
       
   Apples.prototype.placeApples = function () {
-    console.log("placing apples");
     var numApples = 10, i = 0, max = this.board.dimX - 1;
     
     for (i = 0; i < numApples; i+=1) {
-      console.log("placing apples");
       var x = Math.floor((Math.random()*max)+1),
           y = Math.floor((Math.random()*max)+1),
           appleCoord = new Coord(x, y);
-          
-      this.appleCoords.push(appleCoord);
+        
+      if (!this.isSnake(appleCoord)) {
+        console.log("no snake segment matches")
+        this.appleCoords.push(appleCoord);
+      }
     }
+  };
+  
+  Apples.prototype.isSnake = function (appleCoord) {
+    var index = 0, segments = this.board.snake.segments;
+    
+    for (index = 0; index < segments.length; index+=1) {
+      if (appleCoord.equal(segments[index])) {
+        console.log("apple === snake")
+        console.log(appleCoord)
+        console.log(segments[index])
+        return true;
+      }
+    }
+    return false;
   };
       
   Coord.prototype.plus = function (coord1, coord2) {
@@ -77,24 +91,23 @@
     var headCoord = this.segments[0],
         newHead = headCoord.plus(headCoord, Snake.DIRECTIONS[this.currentDir]);
         
+    if (this.board.apples.appleCoords.length < 5) {
+      this.board.apples.placeApples();
+    }
+        
     if (this.board.validMove(newHead)) {
       this.segments.splice(0, 0, newHead);
-      if (this.eatsApple(newHead)) {
-        // this.grow();
-        console.log("snake eats apples")
-      } else {
+      if (!this.eatsApple(newHead)) {
         this.tailCoord = this.segments.pop();
       }
     } else {
       this.board.gameOver = true;
-      console.log("gameover");
     }
   };
   
   Snake.prototype.eatsApple = function (newHead) {
     var index = 0, appleCoords = this.board.apples.appleCoords;
     
-    console.log(appleCoords);
     for (index =0; index < appleCoords.length; index+=1) {
       if (appleCoords[index].equal(newHead)) {
         appleCoords.splice(index, 1);
@@ -170,7 +183,6 @@
         $el.append($('<div>').addClass(this.grid[row][col]));
       }
     }
-    // console.log(this.grid);
   }; 
       
 }(this));

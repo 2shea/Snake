@@ -22,14 +22,10 @@
   };
   
   UI.prototype.handleKeyEvent = function (event) {
-    console.log(event.keyCode)
     if (event.keyCode in UI.KEYS) {
       this.board.snake.turn(UI.KEYS[event.keyCode]);
-      console.log(UI.KEYS[event.keyCode])
-    } else {
-      console.log("another key was hit")
     }
-  }
+  };
   
   UI.prototype.start = function () {
     var UI = this;
@@ -40,9 +36,10 @@
       UI.step();
 
       if (UI.board.gameOver) {
+        alert("Game Over!")
         clearInterval(gameLoop);
       }
-    }, 1000);
+    }, 200);
   };
   
   UI.prototype.step = function () {
