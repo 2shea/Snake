@@ -50,7 +50,6 @@
           appleCoord = new Coord(x, y);
         
       if (!this.isSnake(appleCoord)) {
-        console.log("no snake segment matches")
         this.appleCoords.push(appleCoord);
       }
     }
@@ -61,9 +60,6 @@
     
     for (index = 0; index < segments.length; index+=1) {
       if (appleCoord.equal(segments[index])) {
-        console.log("apple === snake")
-        console.log(appleCoord)
-        console.log(segments[index])
         return true;
       }
     }
@@ -142,8 +138,17 @@
   
   Board.prototype.validMove = function (newHead) {
     var inside = (newHead.X >= 0) && (newHead.X < this.dimX) && (newHead.Y >= 0)
-    && (newHead.Y < this.dimY);
-    return inside;
+    && (newHead.Y < this.dimY),
+        i = 0,
+        empty = true;
+    
+    for (i = 0; i < this.snake.segments.length; i+=1) {
+      if (this.snake.segments[i].equal(newHead)) {
+        empty = false;
+      }
+    }
+    
+    return inside && empty;
   };
   
   Board.prototype.placeSnake = function () {
