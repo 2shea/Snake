@@ -1,0 +1,30 @@
+.snake {
+  background: #00FF00;
+  width: 8px;
+  height: 8px;
+  float: left;
+  margin: 1px;
+}
+
+.tile {
+  background: #EEE;
+  width: 8px;
+  height: 8px;
+  float: left;
+  margin: 1px;
+}
+
+.apple {
+  color: red;
+  background: #FF0000;
+  width: 8px;
+  height: 8px;
+  float: left;
+  margin: 1px;
+}
+
+.snake-board {
+/*  border: 1px solid black;*/
+}
+
+
